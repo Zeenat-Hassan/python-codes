@@ -266,7 +266,7 @@ Query to get sum of salaries department wise
 # print(myresult)
 
 """
-TOP funtion
+LIKE operator
 """
 
 # sql="Select distinct(name) " \
