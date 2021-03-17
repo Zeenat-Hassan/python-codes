@@ -48,8 +48,8 @@ To generate random records in salary table.
 """
 To check the count of the records in the table
 """
-
-# mycursor.execute("SELECT count(*) FROM salary")
+# sql="SELECT count(*) FROM salary"
+# mycursor.execute(sql)
 # myresult = mycursor.fetchall()
 # print(myresult)
 
@@ -57,14 +57,16 @@ To check the count of the records in the table
 """
  to get count of records of employees table
 """
-# mycursor.execute("SELECT count(*) FROM employees")
+# sql="SELECT count(*) FROM employees"
+# mycursor.execute(sql)
 # myresult = mycursor.fetchall()
 # print(myresult)
 
 """
  to get unique names of employees
-"""
-# sql = "SELECT DISTINCT(name) FROM employees"
+# """
+# sql = "SELECT DISTINCT(name) " \
+#       "FROM employees"
 # mycursor.execute(sql)
 # myresult = mycursor.fetchall()
 # print(myresult)
@@ -72,7 +74,8 @@ To check the count of the records in the table
 """
  to get unique genders of employees
 """
-# sql = "SELECT DISTINCT(gender) FROM employees"
+# sql = "SELECT DISTINCT(gender) " \
+#       "FROM employees"
 # mycursor.execute(sql)
 # myresult = mycursor.fetchall()
 # print(myresult)
@@ -81,7 +84,9 @@ To check the count of the records in the table
 to get count of employeesin dept no 1
 """
 
-# sql = "SELECT count(*) FROM employees where dept_no={}".format(1)
+# sql = "SELECT count(*) " \
+#       "FROM employees " \
+#       "where dept_no={}".format(1)
 # mycursor.execute(sql)
 # myresult = mycursor.fetchall()
 # print(myresult)
@@ -89,7 +94,9 @@ to get count of employeesin dept no 1
 """
  to get employees whose gender is male
 """
-# sql= "Select count(*) from employees where gender=\"Male\""
+# sql= "Select count(*) " \
+#      "from employees" \
+#      " where gender=\"Male\""
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -97,7 +104,9 @@ to get count of employeesin dept no 1
 """
 to get records where gender is male
 """
-# sql= "Select * from employees where gender=\"Male\""
+# sql= "Select * " \
+#      "from employees " \
+#      "where gender=\"Male\""
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -105,7 +114,9 @@ to get records where gender is male
 """
 Query to get id's of employees whose name is zeenat
 """
-# sql= "Select employee_no from employees where name=\"Zeenat\""
+# sql= "Select employee_no " \
+#      "from employees" \
+#      " where name=\"Samra\""
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -115,7 +126,9 @@ Query to get id's of employees whose name is zeenat
 Practicing Subqueries
 to get records of employees whose name and zeenat and gender male
 """
-# sql="Select * from (Select * from employees where gender=\"Male\")t where name=\"Zeenat\""
+# sql="Select *" \
+#     " from (Select * from employees where gender=\"Male\")t " \
+#     "where name=\"Zeenat\""
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -124,17 +137,20 @@ to get records of employees whose name and zeenat and gender male
 """
 to practice joins by joining department table and employees table
 """
-# sql="Select * from employees inner join department on employees.dept_no=department.dept_no "
+# sql="Select * " \
+#     "from employees inner join department on employees.dept_no=department.dept_no "
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
 
 """
 JOINS
-to joining multiple tables
+to joining multiple tables without duplicate columns
 
 """
-# sql="Select employees.employee_no,employees.name,employees.dept_no,employees.gender,department.dept_name,salary.position,salary.salary from salary inner join employees on employees.employee_no=salary.employee_no inner join department on employees.dept_no=department.dept_no "
+# sql="Select employees.employee_no,employees.name,employees.dept_no,employees.gender,department.dept_name,salary.position,salary.salary " \
+#     "from salary inner join employees on employees.employee_no=salary.employee_no" \
+#     " inner join department on employees.dept_no=department.dept_no "
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -143,7 +159,11 @@ to joining multiple tables
 JOINS AND SUBQUERIES
  detail of the employee who has the maximum salary
 """
-# sql="Select employees.employee_no,employees.name,employees.dept_no,employees.gender,department.dept_name,salary.position,salary.salary from salary inner join employees on employees.employee_no=salary.employee_no inner join department on employees.dept_no=department.dept_no where salary in (select max(salary) from salary)"
+# sql="Select employees.employee_no,employees.name,employees.dept_no,employees.gender,department.dept_name,salary.position,salary.salary" \
+#     " from salary inner join employees on employees.employee_no=salary.employee_no " \
+#     " inner join department on employees.dept_no=department.dept_no " \
+#     "where salary in " \
+#     "(select max(salary) from salary)"
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -152,7 +172,10 @@ JOINS AND SUBQUERIES
 GROUP BY,SUBQUERY
 12  to get employees with third max salary
 """
-# sql="Select salary from (Select distinct(salary) from salary order by salary desc limit 3) t order by salary asc limit 1"
+# sql="Select salary " \
+#     "from (Select distinct(salary)" \
+#            "from salary order by salary desc limit 3) t " \
+#     "order by salary asc limit 1"
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -162,7 +185,9 @@ GROUP BY,SUBQUERY
 GET top 3 salaries
 
 """
-# sql="Select distinct(salary) from salary order by salary desc limit 3"
+# sql="Select distinct(salary) " \
+#     "from salary " \
+#     "order by salary desc limit 3"
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -171,7 +196,11 @@ GET top 3 salaries
 GROUP BY,SUBQUERY
 Query to get employees with second max salary
 """
-# sql="Select salary from (Select distinct(salary) from salary order by salary desc limit 2) t order by salary asc limit 1"
+# sql="Select salary " \
+#     "from ( Select distinct(salary)" \
+#           " from salary order by salary desc limit 2) t" \
+#     " order by salary asc " \
+#     "limit 1"
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -180,7 +209,10 @@ Query to get employees with second max salary
 
 Query to get max salaries department wise
 """
-# sql= "Select max(salary) as maxsal, dept_name as department from salary inner join employees on employees.employee_no=salary.employee_no inner join department on employees.dept_no=department.dept_no group by dept_name"
+# sql= "Select max(salary) as maxsal, dept_name as department " \
+#      "from salary inner join employees on employees.employee_no=salary.employee_no " \
+#      "inner join department on employees.dept_no=department.dept_no" \
+#      " group by dept_name"
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -189,7 +221,8 @@ Query to get max salaries department wise
 
 CONCAT built in function
 """
-# sql="Select CONCAT(\"dept_no is \", dept_no ,\"and dept name is  \", dept_name) AS department_information from department"
+# sql="Select CONCAT(\"dept_no is \", dept_no ,\" and dept name is  \", dept_name) AS department_information " \
+#     "from department"
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -198,7 +231,10 @@ CONCAT built in function
 
 Query to get min salaries department wise
 # """
-# sql= "Select min(salary) as maxsal, dept_name as department from salary inner join employees on employees.employee_no=salary.employee_no inner join department on employees.dept_no=department.dept_no group by dept_name"
+# sql= "Select min(salary) as minsal, dept_name as department " \
+#      "from salary inner join employees on employees.employee_no=salary.employee_no " \
+#      "inner join department on employees.dept_no=department.dept_no " \
+#      "group by dept_name"
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -208,7 +244,10 @@ Query to get min salaries department wise
 
 Query to get avg salaries department wise
 # """
-# sql= "Select avg(salary) as maxsal, dept_name as department from salary inner join employees on employees.employee_no=salary.employee_no inner join department on employees.dept_no=department.dept_no group by dept_name"
+# sql= "Select avg(salary) as avgsal, dept_name as department " \
+#      "from salary inner join employees on employees.employee_no=salary.employee_no " \
+#      "inner join department on employees.dept_no=department.dept_no " \
+#      "group by dept_name"
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -218,7 +257,10 @@ Query to get avg salaries department wise
 
 Query to get sum of salaries department wise
 """
-# sql= "Select sum(salary) as maxsal, dept_name as department from salary inner join employees on employees.employee_no=salary.employee_no inner join department on employees.dept_no=department.dept_no group by dept_name"
+# sql= "Select sum(salary) as maxsal, dept_name as department" \
+#      " from salary inner join employees on employees.employee_no=salary.employee_no " \
+#      "inner join department on employees.dept_no=department.dept_no " \
+#      "group by dept_name"
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -226,7 +268,10 @@ Query to get sum of salaries department wise
 """
 TOP funtion
 """
-# sql="Select distinct(name) from employees where name like \"%n%\""
+
+# sql="Select distinct(name) " \
+#     "from employees " \
+#     "where name like \"%n%\""
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -235,7 +280,10 @@ TOP funtion
 Group_concat function
 """
 
-# sql="Select dept_name,GROUP_CONCAT(employee_no) from employees inner join department on employees.dept_no=department.dept_no group by dept_name"
+# sql="Select dept_name,GROUP_CONCAT(employee_no)" \
+#     " from employees inner join department" \
+#     " on employees.dept_no=department.dept_no " \
+#     "group by dept_name"
 # mycursor.execute(sql)
 # myresult=mycursor.fetchall()
 # print(myresult)
@@ -245,8 +293,10 @@ Group_concat function
 SUbSTR built in function
 """
 
-sql="Select SUBSTR(dept_name,1,3) from department"
-mycursor.execute(sql)
-myresult=mycursor.fetchall()
-print(myresult)
+# sql="Select SUBSTR(dept_name,1,3) " \
+#     "from department"
+# mycursor.execute(sql)
+# myresult=mycursor.fetchall()
+# print(myresult)
+
 
