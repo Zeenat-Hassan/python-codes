@@ -23,8 +23,8 @@ To generate 1000000 random records in employees table
 # name_lis=["Zeenat","Samra","Dua","Hanif","Fasih","Zarar"]
 # gender_lis=["Male","Female"]
 #
-# employee_no=2634497
-# while employee_no<=4000000:
+# employee_no=4000001
+# while employee_no<=10000000:
 #     sql = "INSERT INTO employees (name,gender,dept_no ) VALUES (%s,%s,%s)"
 #     val = (random.choice(name_lis),random.choice(gender_lis) ,random.randint(1, 5))
 #     mycursor.execute(sql, val)
@@ -46,9 +46,9 @@ To generate 1000000 random records in employees table
 #     employee_no +=1
 
 
-# """
-#  to get count of records of employees table
-# """
+"""
+ to get count of records of employees table
+"""
 # sql="SELECT count(*) FROM employees"
 # mycursor.execute(sql)
 # myresult = mycursor.fetchall()
@@ -64,9 +64,9 @@ To check the count of the records in the table
 
 
 """
-Creating Index on dept_no
+Now Dropping Indexes to check performance without Indexes.
 """
-#
+
 # sql_index=("DROP INDEX index_name ON table_name;")
 # mycursor.execute("sql_index")
 #
@@ -77,12 +77,18 @@ Creating Index on dept_no
 """
 Creating Index on employee_name
 """
-# sql_index=("create Index index_on_empname on employees(name)")
+# sql_index=("create Index emp_inf_name on employees(name)")
 # mycursor.execute(sql_index)
 
 
 """
-Checking Indexes
+Creating Index on dept_name in department table
+"""
+# sql_index=("create Index dept_inf_name on department(dept_name)")
+# mycursor.execute(sql_index)
+
+"""
+Checking Indexes on employee table
 # """
 # tic = time()
 # mycursor.execute("Show Index from employees")
@@ -91,17 +97,16 @@ Checking Indexes
 # toc = time()
 # print (toc - tic)
 
-
 """
-Query to search through indexes
+Checking Indexes on department table
 # """
-# sql="Select * from employees with  (INDEX(index_on_employee_name))"
 # tic = time()
-# mycursor.execute(sql)
+# mycursor.execute("Show Index from department")
 # myresult = mycursor.fetchall()
 # print(myresult)
 # toc = time()
 # print (toc - tic)
+
 
 """
 check execution time first without indexes on employee_name
@@ -114,7 +119,7 @@ check execution time first without indexes on employee_name
 # print(myresult)
 # toc = time()
 # print (toc - tic)
-#execution time is 10.139633178710938
+
 
 """
 Now making index and running same query
@@ -128,7 +133,7 @@ Now making index and running same query
 # print(myresult)
 # toc = time()
 # print (toc - tic)
-#query time 11.150353908538818
+
 
 
 """
@@ -143,7 +148,7 @@ Now getting the same query through subqueries
 # print(myresult)
 # toc = time()
 # print (toc - tic)
-#querytime is 16.97790002822876
+
 
 
 """
@@ -160,17 +165,108 @@ Query to get dept name and dept no and employee by simple join without index on 
 # toc = time()
 # print (toc - tic)
 
-#querytime=50.31611204147339
 
 
 """
-Now quering same after making index on dept_no,dept_name and using subquery instead of join.
+  Different Methods to optimize queries 
 """
-# sql_index=("create Index dept_info on department(dept_no,dept_name)")
-# mycursor.execute(sql_index)
 
-sql="Select employees.employee_name,employees.dept_no,department.dept_name from employees where department.dept_name exists (Select dept_name as department.dept_name from departments)"
+"""
+Creating a view table on employee_no and dept_no and joining it with the department table vs simiply selecting employee_no
+dept_no and department name by inner joining the employees table with the department table
+"""
+#
+# sql= "CREATE VIEW employee_info AS " \
+#      "Select employee_no,dept_no " \
+#      "from employees go"
+# tic = time()
+# mycursor.execute(sql)
+# # myresult = mycursor.fetchall()
+# # print(myresult)
+# toc = time()
+# print (toc - tic)
 
+
+"""
+Now joining the view with the department table
+"""
+# sql="Select employee_info.employee_no,employee_info.dept_no, department.dept_name " \
+#     "from employee_info inner join department on employee_info.dept_no=department.dept_no "
+# tic = time()
+# mycursor.execute(sql)
+# myresult = mycursor.fetchall()
+# print(myresult)
+# toc = time()
+# print (toc - tic)
+
+
+
+"""
+
+Now simply applying join without using views
+
+"""
+#
+# sql="Select employees.employee_no,employees.dept_no, department.dept_name " \
+#     "from employees inner join department on employees.dept_no=department.dept_no "
+# tic = time()
+# mycursor.execute(sql)
+# myresult = mycursor.fetchall()
+# print(myresult)
+# toc = time()
+# print (toc - tic)
+
+
+"""
+retrieving data from two tables without join,  rather than join using AND
+"""
+# sql="Select employees.employee_no,employees.dept_no,department.dept_name from employees,department where employees.dept_no=department.dept_no"
+# # tic = time()
+# mycursor.execute(sql)
+# myresult = mycursor.fetchall()
+# print(myresult)
+# toc = time()
+# print (toc - tic)
+"""
+I pasting the queries I ran through phpmyadmin because pycharm stopped responding when 100000000 records were added
+"""
+#
+# (to check effect of group by on query performance )
+# select count(*) from employees group by dept_no
+
+# (performing the same through union)
+
+
+
+"""
+GROUP BY VS DISTINCT
+"""
+# sql=("Select gender from employees group by gender")
+# tic = time()
+# mycursor.execute(sql)
+# myresult = mycursor.fetchall()
+# print(myresult)
+# toc = time()
+# print (toc - tic)
+
+
+
+
+# sql=("Select distinct gender from employees ")
+# tic = time()
+# mycursor.execute(sql)
+# myresult = mycursor.fetchall()
+# print(myresult)
+# toc = time()
+# print (toc - tic)
+
+
+"""
+now for more distinct values which exists in employee_id table we will check performance of group by and distinct
+"""
+
+
+sql=("Select employee_no from employees group by employee_no")
 tic = time()
 mycursor.execute(sql)
 myresult = mycursor.fetchall()
@@ -181,31 +277,13 @@ print (toc - tic)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# sql=("Select distinct gender from employees ")
+# tic = time()
+# mycursor.execute(sql)
+# myresult = mycursor.fetchall()
+# print(myresult)
+# toc = time()
+# print (toc - tic)
 
 
 
